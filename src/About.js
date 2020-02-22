@@ -1,12 +1,19 @@
 import React from "react";
 import Footer from "./components/Footer";
+import MatchQuestions from "./components/MatchQuestions";
 
-function About() {
-  return (
-    <div>
-      <Footer />
-    </div>
-  );
+class About extends MatchQuestions {
+  constructor(props) {
+    super(props);
+    console.log(this.dogForm);
+  }
+  render() {
+    return (
+      <div>
+        <Footer />
+      </div>
+    );
+  }
 }
 
 export default About;

@@ -1,15 +1,18 @@
 import React from "react";
 import MatchIntroduction from "./components/MatchIntroduction";
-import MatchQuestion from "./components/MatchQuestions";
+import MatchQuestions from "./components/MatchQuestions";
 import Footer from "./components/Footer";
 
-function Match() {
-  return (
-    <div>
-      <MatchIntroduction />
-      <Footer />
-    </div>
-  );
+class Match extends React.Component {
+  render() {
+    return (
+      <div>
+        <MatchIntroduction />
+        <MatchQuestions />
+        <Footer />
+      </div>
+    );
+  }
 }
 export default Match;
 
