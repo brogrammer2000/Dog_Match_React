@@ -6,7 +6,8 @@ class MatchQuestions extends React.Component {
     this.state = {
       dogForm: "",
       answers: [],
-      plainArr: []
+      plainArr: [],
+      apiChar: []
     };
     this.handleChange = this.handleChange.bind(this);
     this.handleClick = this.handleClick.bind(this);
@@ -37,6 +38,58 @@ class MatchQuestions extends React.Component {
     event.preventDefault();
 
     console.log(this.state.plainArr);
+    let temperament = [];
+    let Bred_for = [];
+    let weigth = [];
+    for (let i = 0; i < this.state.plainArr.length; i++) {
+      if (this.state.plainArr[i] === "Small apartment") {
+        temperament.push("Independent, Compose, Calm, Quiet");
+      } else if (this.state.plainArr[i] === "Big apartment") {
+        temperament.push("Independent, Patient, Adaptable");
+      } else if (this.state.plainArr[i] === "Villa") {
+        temperament.push("Active, Playful, Energetic, Lively");
+      } else if (this.state.plainArr[i] === "Friend") {
+        Bred_for.push("Companionship, Family companion dog, Companion, Lapdog");
+      } else if (this.state.plainArr[i] === "Hunter") {
+        Bred_for.push("Hunting");
+      } else if (this.state.plainArr[i] === "Protector") {
+        Bred_for.push("Guarding, Guardian, guard, watchdog");
+      } else if (this.state.plainArr[i] === "Yes") {
+        temperament.push("Friendly, Docile, Affectionate, Gentle, Faithful");
+      } else if (this.state.plainArr[i] === "Small/No") {
+        temperament.push("Calm");
+      } else if (this.state.plainArr[i] === "Medium") {
+        temperament.push("Independent, Patient, Adaptable");
+      } else if (this.state.plainArr[i] === "Big") {
+        temperament.push("Active, Playful, Energetic, Lively");
+      } else if (this.state.plainArr[i] === "Only a little") {
+        temperament.push("Independent, Compose, Calm, Quiet");
+      } else if (
+        this.state.plainArr[i] === "Yes, I would like it to be active"
+      ) {
+        temperament.push("Independent, Patient, Adaptable");
+      } else if (this.state.plainArr[i] === "A never tired dog") {
+        temperament.push("Active, Playful, Energetic, Lively");
+      } else if (this.state.plainArr[i] === "Rarely") {
+        temperament.push("Independent, Compose, Calm, Quiet");
+      } else if (this.state.plainArr[i] === "At least twice a day") {
+        temperament.push("Independent, Patient, Adaptable");
+      } else if (this.state.plainArr[i] === "Three or more times a day") {
+        temperament.push("Active, Playful, Energetic, Lively");
+      } else if (this.state.plainArr[i] === "No") {
+        temperament.push(
+          "Alert, Loyal, Protective, Brave, Powerful, Courageous  "
+        );
+      } else if (this.state.plainArr[i] === "Small") {
+        weigth.push("Independent, Patient, Adaptable");
+      } else if (this.state.plainArr[i] === "Medium") {
+        weigth.push("Active, Playful, Energetic, Lively");
+      } else if (this.state.plainArr[i] === "Big") {
+        weigth.push("Alert, Loyal, Protective, Brave, Powerful, Courageous  ");
+      }
+    }
+    console.log(temperament);
+    console.log(Bred_for);
   }
 
   render() {
@@ -362,6 +415,7 @@ class MatchQuestions extends React.Component {
           ></input>
           <label>yes</label>
           <br></br>
+
           <button onClick={this.handleClick}>Find your perfect Dog!</button>
         </form>
       </div>
