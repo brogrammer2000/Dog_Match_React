@@ -33,63 +33,125 @@ class MatchQuestions extends React.Component {
       };
     });
   }
-
+  //Handling button click
   handleClick(event) {
     event.preventDefault();
 
     console.log(this.state.plainArr);
-    let temperament = [];
-    let Bred_for = [];
-    let weigth = [];
-    for (let i = 0; i < this.state.plainArr.length; i++) {
-      if (this.state.plainArr[i] === "Small apartment") {
-        temperament.push("Independent, Compose, Calm, Quiet");
-      } else if (this.state.plainArr[i] === "Big apartment") {
-        temperament.push("Independent, Patient, Adaptable");
-      } else if (this.state.plainArr[i] === "Villa") {
-        temperament.push("Active, Playful, Energetic, Lively");
-      } else if (this.state.plainArr[i] === "Friend") {
-        Bred_for.push("Companionship, Family companion dog, Companion, Lapdog");
-      } else if (this.state.plainArr[i] === "Hunter") {
-        Bred_for.push("Hunting");
-      } else if (this.state.plainArr[i] === "Protector") {
-        Bred_for.push("Guarding, Guardian, guard, watchdog");
-      } else if (this.state.plainArr[i] === "Yes") {
-        temperament.push("Friendly, Docile, Affectionate, Gentle, Faithful");
-      } else if (this.state.plainArr[i] === "Small/No") {
-        temperament.push("Calm");
-      } else if (this.state.plainArr[i] === "Medium") {
-        temperament.push("Independent, Patient, Adaptable");
-      } else if (this.state.plainArr[i] === "Big") {
-        temperament.push("Active, Playful, Energetic, Lively");
-      } else if (this.state.plainArr[i] === "Only a little") {
-        temperament.push("Independent, Compose, Calm, Quiet");
-      } else if (
-        this.state.plainArr[i] === "Yes, I would like it to be active"
-      ) {
-        temperament.push("Independent, Patient, Adaptable");
-      } else if (this.state.plainArr[i] === "A never tired dog") {
-        temperament.push("Active, Playful, Energetic, Lively");
-      } else if (this.state.plainArr[i] === "Rarely") {
-        temperament.push("Independent, Compose, Calm, Quiet");
-      } else if (this.state.plainArr[i] === "At least twice a day") {
-        temperament.push("Independent, Patient, Adaptable");
-      } else if (this.state.plainArr[i] === "Three or more times a day") {
-        temperament.push("Active, Playful, Energetic, Lively");
-      } else if (this.state.plainArr[i] === "No") {
-        temperament.push(
-          "Alert, Loyal, Protective, Brave, Powerful, Courageous  "
-        );
-      } else if (this.state.plainArr[i] === "Small") {
-        weigth.push("Independent, Patient, Adaptable");
-      } else if (this.state.plainArr[i] === "Medium") {
-        weigth.push("Active, Playful, Energetic, Lively");
-      } else if (this.state.plainArr[i] === "Big") {
-        weigth.push("Alert, Loyal, Protective, Brave, Powerful, Courageous  ");
-      }
-    }
-    console.log(temperament);
-    console.log(Bred_for);
+    //fetching API with all the dog breeds and charateristics
+    fetch("https://api.thedogapi.com/v1/breeds")
+      .then(response => response.json())
+      .then(data => {
+        //Declaring variables which will be filled by the user input
+        let temperament = [];
+        let Bred_for = [];
+        let weigth = [];
+        let temperamentCounter = 0;
+        //Dog list filled on the based of the user input
+        let possibleDogs = [];
+
+        //loop which checkes the user answers and fill up the variable arrays declare above
+        for (let i = 0; i < this.state.plainArr.length; i++) {
+          if (this.state.plainArr[i] === "Small apartment") {
+            temperament.push("Independent", "Compose", "Calm", "Quiet");
+          } else if (this.state.plainArr[i] === "Big apartment") {
+            temperament.push("Independent", "Patient", "Adaptable");
+          } else if (this.state.plainArr[i] === "Villa") {
+            temperament.push("Active", "Playful", "Energetic", "Lively");
+          } else if (this.state.plainArr[i] === "Friend") {
+            Bred_for.push(
+              "Companionship",
+              "Family companion dog",
+              "Companion",
+              "Lapdog"
+            );
+          } else if (this.state.plainArr[i] === "Hunter") {
+            Bred_for.push("Hunting");
+          } else if (this.state.plainArr[i] === "Protector") {
+            Bred_for.push("Guarding", "Guardian", "guard", "watchdog");
+          } else if (this.state.plainArr[i] === "Yes") {
+            temperament.push(
+              "Friendly",
+              "Docile",
+              "Affectionate",
+              "Gentle",
+              "Faithful"
+            );
+          } else if (this.state.plainArr[i] === "Small/No") {
+            temperament.push("Calm");
+          } else if (this.state.plainArr[i] === "Medium") {
+            temperament.push("Independent", "Patient", "Adaptable");
+          } else if (this.state.plainArr[i] === "Big") {
+            temperament.push("Active", "Playful", "Energetic", "Lively");
+          } else if (this.state.plainArr[i] === "Only a little") {
+            temperament.push("Independent", "Compose", "Calm", "Quiet");
+          } else if (
+            this.state.plainArr[i] === "Yes, I would like it to be active"
+          ) {
+            temperament.push("Independent", "Patient", "Adaptable");
+          } else if (this.state.plainArr[i] === "A never tired dog") {
+            temperament.push("Active", "Playful", "Energetic", "Lively");
+          } else if (this.state.plainArr[i] === "Rarely") {
+            temperament.push("Independent", "Compose", "Calm", "Quiet");
+          } else if (this.state.plainArr[i] === "At least twice a day") {
+            temperament.push("Independent", "Patient", "Adaptable");
+          } else if (this.state.plainArr[i] === "Three or more times a day") {
+            temperament.push("Active", "Playful", "Energetic", "Lively");
+          } else if (this.state.plainArr[i] === "No") {
+            temperament.push(
+              "Alert",
+              "Loyal",
+              "Protective",
+              "Brave",
+              "Powerful",
+              "Courageous"
+            );
+          } else if (this.state.plainArr[i] === "Small") {
+            weigth.push("Independent", "Patient", "Adaptable");
+          } else if (this.state.plainArr[i] === "Medium") {
+            weigth.push("Active", "Playful", "Energetic", "Lively");
+          } else if (this.state.plainArr[i] === "Big") {
+            weigth.push(
+              "Alert",
+              "Loyal",
+              "Protective",
+              "Brave",
+              "Powerful",
+              "Courageous"
+            );
+          }
+        }
+        for (let i = 0; i < temperament.length; i++) {
+          for (let j = 0; j < temperament.length; j++) {
+            if (temperament[i] === temperament[j]) {
+              temperament.pop(temperament[i]);
+            }
+          }
+        }
+
+        console.log(temperament);
+
+        //Looping through the API in order to compare the user input and API dog info
+        for (let j = 0; j < data.length; j++) {
+          //Checking if the temperament of the dog are the same as the one of one of the list
+          if (data[j].temperament !== undefined) {
+            for (let q = 0; q < data[j].temperament.split(",").length; q++) {
+              let userDog = temperament.sort();
+              let apiDog = data[j].temperament.split(",").sort();
+              console.log(userDog);
+              console.log(apiDog);
+
+              if (userDog[q] === apiDog[q]) {
+                temperamentCounter++;
+                if (temperamentCounter >= 2) {
+                  possibleDogs.push(data[j].name);
+                }
+              }
+            }
+          }
+        }
+        console.log(possibleDogs);
+      });
   }
 
   render() {
