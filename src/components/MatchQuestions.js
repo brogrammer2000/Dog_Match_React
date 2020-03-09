@@ -12,7 +12,7 @@ class MatchQuestions extends React.Component {
     this.handleChange = this.handleChange.bind(this);
     this.handleClick = this.handleClick.bind(this);
   }
-
+  //Answers overlaps, they need to be differentiated between each other ptherwise it will stop before reaching the correct answer
   handleChange(event) {
     const { name, value, type, checked } = event.target;
     type === "checkbox"
@@ -37,16 +37,17 @@ class MatchQuestions extends React.Component {
   handleClick(event) {
     event.preventDefault();
 
-    console.log(this.state.plainArr);
     //fetching API with all the dog breeds and charateristics
     fetch("https://api.thedogapi.com/v1/breeds")
       .then(response => response.json())
       .then(data => {
         //Declaring variables which will be filled by the user input
         let temperament = [];
-        let Bred_for = [];
+        let bred_for = [];
         let weigth = [];
         let temperamentCounter = 0;
+        let bredCounter = 0;
+        let wieghtCounter = 0;
         //Dog list filled on the based of the user input
         let possibleDogs = [];
 
@@ -59,17 +60,17 @@ class MatchQuestions extends React.Component {
           } else if (this.state.plainArr[i] === "Villa") {
             temperament.push("Active", "Playful", "Energetic", "Lively");
           } else if (this.state.plainArr[i] === "Friend") {
-            Bred_for.push(
+            bred_for.push(
               "Companionship",
               "Family companion dog",
               "Companion",
               "Lapdog"
             );
           } else if (this.state.plainArr[i] === "Hunter") {
-            Bred_for.push("Hunting");
+            bred_for.push("Hunting");
           } else if (this.state.plainArr[i] === "Protector") {
-            Bred_for.push("Guarding", "Guardian", "guard", "watchdog");
-          } else if (this.state.plainArr[i] === "Yes") {
+            bred_for.push("Guarding", "Guardian", "guard", "watchdog");
+          } else if (this.state.plainArr[i] === "Yes I do") {
             temperament.push(
               "Friendly",
               "Docile",
@@ -77,6 +78,10 @@ class MatchQuestions extends React.Component {
               "Gentle",
               "Faithful"
             );
+          } else if (this.state.plainArr[i] === "No I do not") {
+            temperament.push("Calm");
+          } else if (this.state.plainArr[i] === "Maybe in the future") {
+            temperament.push("Independent", "Patient", "Adaptable");
           } else if (this.state.plainArr[i] === "Small/No") {
             temperament.push("Calm");
           } else if (this.state.plainArr[i] === "Medium") {
@@ -106,21 +111,28 @@ class MatchQuestions extends React.Component {
               "Powerful",
               "Courageous"
             );
-          } else if (this.state.plainArr[i] === "Small") {
-            weigth.push("Independent", "Patient", "Adaptable");
-          } else if (this.state.plainArr[i] === "Medium") {
-            weigth.push("Active", "Playful", "Energetic", "Lively");
-          } else if (this.state.plainArr[i] === "Big") {
-            weigth.push(
-              "Alert",
-              "Loyal",
-              "Protective",
-              "Brave",
-              "Powerful",
-              "Courageous"
-            );
+          } else if (this.state.plainArr[i] === "Small size") {
+            weigth.push(10);
+          } else if (this.state.plainArr[i] === "Medium size") {
+            weigth.push(25);
+          } else if (this.state.plainArr[i] === "Big size") {
+            console.log("BiGGOG");
+            weigth.push(26);
+          } else if (this.state.plainArr[i] === "10€") {
+            weigth.push(10);
+          } else if (this.state.plainArr[i] === "25€") {
+            weigth.push(25);
+          } else if (this.state.plainArr[i] === ">25€") {
+            weigth.push(26);
+          } else if (this.state.plainArr[i] === "Surely no") {
+            weigth.push(10);
+          } else if (this.state.plainArr[i] === "Maybe, but not often") {
+            weigth.push(25);
+          } else if (this.state.plainArr[i] === "Yes for sure") {
+            weigth.push(26);
           }
         }
+        /*
         for (let i = 0; i < temperament.length; i++) {
           for (let j = 0; j < temperament.length; j++) {
             if (temperament[i] === temperament[j]) {
@@ -128,28 +140,69 @@ class MatchQuestions extends React.Component {
             }
           }
         }
-
-        console.log(temperament);
-
+        */
         //Looping through the API in order to compare the user input and API dog info
         for (let j = 0; j < data.length; j++) {
+          temperamentCounter = 0;
           //Checking if the temperament of the dog are the same as the one of one of the list
           if (data[j].temperament !== undefined) {
             for (let q = 0; q < data[j].temperament.split(",").length; q++) {
               let userDog = temperament.sort();
               let apiDog = data[j].temperament.split(",").sort();
-              console.log(userDog);
-              console.log(apiDog);
-
-              if (userDog[q] === apiDog[q]) {
-                temperamentCounter++;
-                if (temperamentCounter >= 2) {
-                  possibleDogs.push(data[j].name);
+              for (let b = 0; b < data[j].temperament.split(",").length; b++) {
+                if (userDog[q] === apiDog[b]) {
+                  temperamentCounter++;
+                  if (temperamentCounter >= 1) {
+                    possibleDogs.push(data[j].name);
+                  }
                 }
               }
             }
           }
         }
+
+        for (let j = 0; j < data.length; j++) {
+          bredCounter = 0;
+          //Checking if the temperament of the dog are the same as the one of one of the list
+          if (data[j].bred_for !== undefined) {
+            for (let q = 0; q < data[j].bred_for.split(",").length; q++) {
+              let userDog = bred_for.sort();
+              let apiDog = data[j].bred_for.split(",").sort();
+              for (let b = 0; b < data[j].bred_for.split(",").length; b++) {
+                if (userDog[q] === apiDog[b]) {
+                  bredCounter++;
+                  if (bredCounter >= 1) {
+                    possibleDogs.push(data[j].name);
+                  }
+                }
+              }
+            }
+          }
+        }
+        let avgWeight = 0;
+        for (let i = 0; i < weigth.length; i++) {
+          avgWeight += weigth[i];
+        }
+
+        let average = avgWeight / weigth.length;
+        console.log(average);
+
+        for (let j = 0; j < data.length; j++) {
+          wieghtCounter = 0;
+          //Checking if the temperament of the dog are the same as the one of one of the list
+          if (data[j].weight.metric !== undefined) {
+            let apiDog = data[j].weight.metric
+              .split(" - ")
+              .map(int => parseInt(int));
+
+            if (average > apiDog[0]) {
+              console.log(average + ">" + apiDog[0]);
+              console.log(data[j].name);
+              possibleDogs.push(data[j].name);
+            }
+          }
+        }
+
         console.log(possibleDogs);
       });
   }
@@ -229,7 +282,7 @@ class MatchQuestions extends React.Component {
             type="checkbox"
             id="question1-3"
             name="dogForm"
-            value="Yes"
+            value="Yes I do"
           ></input>
           <label>Yes</label>
           <br></br>
@@ -239,7 +292,7 @@ class MatchQuestions extends React.Component {
             type="checkbox"
             id="question2-3"
             name="dogForm"
-            value="No"
+            value="No I do not"
           ></input>
           <label>No</label>
           <br></br>
@@ -261,7 +314,7 @@ class MatchQuestions extends React.Component {
             type="checkbox"
             id="question1-4"
             name="question1-4"
-            value="dogForm"
+            value="Small/No"
           ></input>
           <label>Small/No</label>
           <br></br>
@@ -389,7 +442,7 @@ class MatchQuestions extends React.Component {
             type="checkbox"
             id="question1-8"
             name="dogForm"
-            value="Small"
+            value="Small size"
           ></input>
           <label>Small</label>
           <br></br>
@@ -399,7 +452,7 @@ class MatchQuestions extends React.Component {
             type="checkbox"
             id="question2-8"
             name="dogForm"
-            value="Medium"
+            value="Medium size"
           ></input>
           <label>Medium</label>
           <br></br>
@@ -409,7 +462,7 @@ class MatchQuestions extends React.Component {
             type="checkbox"
             id="question3-8"
             name="dogForm"
-            value="Big"
+            value="Big size"
           ></input>
           <label>Big</label>
           <br></br>
@@ -453,7 +506,7 @@ class MatchQuestions extends React.Component {
             type="checkbox"
             id="question1-10"
             name="dogForm"
-            value="No"
+            value="Surely no"
           ></input>
           <label>No</label>
           <br></br>
@@ -473,7 +526,7 @@ class MatchQuestions extends React.Component {
             type="checkbox"
             id="question3-10"
             name="dogForm"
-            value="yes"
+            value="yes for sure"
           ></input>
           <label>yes</label>
           <br></br>
