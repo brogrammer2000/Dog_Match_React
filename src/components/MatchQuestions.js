@@ -8,7 +8,8 @@ class MatchQuestions extends React.Component {
       answers: [],
       plainArr: [],
       apiChar: [],
-      selectedDogs: []
+      selectedDogs: [],
+      selectedDogPic: ""
     };
     this.handleChange = this.handleChange.bind(this);
     this.handleClick = this.handleClick.bind(this);
@@ -36,7 +37,7 @@ class MatchQuestions extends React.Component {
   //Handling button click
   handleClick(event) {
     event.preventDefault();
-
+    document.getElementById("hide").style.display = "none";
     //fetching API with all the dog breeds and charateristics
     fetch("https://api.thedogapi.com/v1/breeds")
       .then(response => response.json())
@@ -256,333 +257,350 @@ class MatchQuestions extends React.Component {
         //setting the constructor selectedDogs equal to possibleDogs
         this.setState({ selectedDogs: possibleDogs });
         console.log(this.state.selectedDogs);
+        fetch(
+          `https://api.thedogapi.com/v1/images/search?breed_id=${this.state.selectedDogs[0].id}`
+        )
+          .then(response => response.json())
+          .then(data => {
+            this.setState({ selectedDogPic: data[0].url });
+            console.log(this.state.selectedDogPic);
+            console.log(data[0].url);
+          });
       });
   }
 
   render() {
     return (
       <div>
-        <form>
-          <p>What type of home/living space do you have?</p>
-          <input
-            checked={this.state.isFriendly}
-            onChange={this.handleChange}
-            type="checkbox"
-            id="question1"
-            name="dogForm"
-            value="Small apartment"
-          ></input>
-          <label>Small apartment</label>
-          <br></br>
-          <input
-            checked={this.state.isFriendly}
-            onChange={this.handleChange}
-            type="checkbox"
-            id="question2"
-            name="dogForm"
-            value="Big apartment"
-          ></input>
-          <label>Big apartment</label>
-          <br></br>
-          <input
-            checked={this.state.isFriendly}
-            onChange={this.handleChange}
-            type="checkbox"
-            id="question3"
-            name="dogForm"
-            value="Villa"
-          ></input>
-          <label>Villa</label>
-          <br></br>
+        <div id="hide">
+          <form>
+            <p>What type of home/living space do you have?</p>
+            <input
+              checked={this.state.isFriendly}
+              onChange={this.handleChange}
+              type="checkbox"
+              id="question1"
+              name="dogForm"
+              value="Small apartment"
+            ></input>
+            <label>Small apartment</label>
+            <br></br>
+            <input
+              checked={this.state.isFriendly}
+              onChange={this.handleChange}
+              type="checkbox"
+              id="question2"
+              name="dogForm"
+              value="Big apartment"
+            ></input>
+            <label>Big apartment</label>
+            <br></br>
+            <input
+              checked={this.state.isFriendly}
+              onChange={this.handleChange}
+              type="checkbox"
+              id="question3"
+              name="dogForm"
+              value="Villa"
+            ></input>
+            <label>Villa</label>
+            <br></br>
 
-          <p>Who will your dog be?</p>
-          <input
-            checked={this.state.isFriendly}
-            onChange={this.handleChange}
-            type="checkbox"
-            id="question1-2"
-            name="dogForm"
-            value="Friend"
-          ></input>
-          <label>Friend</label>
-          <br></br>
-          <input
-            checked={this.state.isFriendly}
-            onChange={this.handleChange}
-            type="checkbox"
-            id="question2-2"
-            name="dogForm"
-            value="Hunter"
-          ></input>
-          <label>Hunter</label>
-          <br></br>
-          <input
-            checked={this.state.isFriendly}
-            onChange={this.handleChange}
-            type="checkbox"
-            id="question3-2"
-            name="dogForm"
-            value="Protector"
-          ></input>
-          <label>Protector</label>
-          <br></br>
+            <p>Who will your dog be?</p>
+            <input
+              checked={this.state.isFriendly}
+              onChange={this.handleChange}
+              type="checkbox"
+              id="question1-2"
+              name="dogForm"
+              value="Friend"
+            ></input>
+            <label>Friend</label>
+            <br></br>
+            <input
+              checked={this.state.isFriendly}
+              onChange={this.handleChange}
+              type="checkbox"
+              id="question2-2"
+              name="dogForm"
+              value="Hunter"
+            ></input>
+            <label>Hunter</label>
+            <br></br>
+            <input
+              checked={this.state.isFriendly}
+              onChange={this.handleChange}
+              type="checkbox"
+              id="question3-2"
+              name="dogForm"
+              value="Protector"
+            ></input>
+            <label>Protector</label>
+            <br></br>
 
-          <p>Do you have children?</p>
-          <input
-            checked={this.state.isFriendly}
-            onChange={this.handleChange}
-            type="checkbox"
-            id="question1-3"
-            name="dogForm"
-            value="Yes I do"
-          ></input>
-          <label>Yes</label>
-          <br></br>
-          <input
-            checked={this.state.isFriendly}
-            onChange={this.handleChange}
-            type="checkbox"
-            id="question2-3"
-            name="dogForm"
-            value="No I do not"
-          ></input>
-          <label>No</label>
-          <br></br>
-          <input
-            checked={this.state.isFriendly}
-            onChange={this.handleChange}
-            type="checkbox"
-            id="question3-3"
-            name="dogForm"
-            value="Maybe in the future"
-          ></input>
-          <label>Maybe in the future</label>
-          <br></br>
+            <p>Do you have children?</p>
+            <input
+              checked={this.state.isFriendly}
+              onChange={this.handleChange}
+              type="checkbox"
+              id="question1-3"
+              name="dogForm"
+              value="Yes I do"
+            ></input>
+            <label>Yes</label>
+            <br></br>
+            <input
+              checked={this.state.isFriendly}
+              onChange={this.handleChange}
+              type="checkbox"
+              id="question2-3"
+              name="dogForm"
+              value="No I do not"
+            ></input>
+            <label>No</label>
+            <br></br>
+            <input
+              checked={this.state.isFriendly}
+              onChange={this.handleChange}
+              type="checkbox"
+              id="question3-3"
+              name="dogForm"
+              value="Maybe in the future"
+            ></input>
+            <label>Maybe in the future</label>
+            <br></br>
 
-          <p>How big is your yard?</p>
-          <input
-            checked={this.state.isFriendly}
-            onChange={this.handleChange}
-            type="checkbox"
-            id="question1-4"
-            name="question1-4"
-            value="Small/No"
-          ></input>
-          <label>Small/No</label>
-          <br></br>
-          <input
-            checked={this.state.isFriendly}
-            onChange={this.handleChange}
-            type="checkbox"
-            id="question2-4"
-            name="dogForm"
-            value="Medium"
-          ></input>
-          <label>Medium</label>
-          <br></br>
-          <input
-            checked={this.state.isFriendly}
-            onChange={this.handleChange}
-            type="checkbox"
-            id="question3-4"
-            name="dogForm"
-            value="Big"
-          ></input>
-          <label>Big</label>
-          <br></br>
+            <p>How big is your yard?</p>
+            <input
+              checked={this.state.isFriendly}
+              onChange={this.handleChange}
+              type="checkbox"
+              id="question1-4"
+              name="question1-4"
+              value="Small/No"
+            ></input>
+            <label>Small/No</label>
+            <br></br>
+            <input
+              checked={this.state.isFriendly}
+              onChange={this.handleChange}
+              type="checkbox"
+              id="question2-4"
+              name="dogForm"
+              value="Medium"
+            ></input>
+            <label>Medium</label>
+            <br></br>
+            <input
+              checked={this.state.isFriendly}
+              onChange={this.handleChange}
+              type="checkbox"
+              id="question3-4"
+              name="dogForm"
+              value="Big"
+            ></input>
+            <label>Big</label>
+            <br></br>
 
-          <p>How active should your dog be?</p>
-          <input
-            checked={this.state.isFriendly}
-            onChange={this.handleChange}
-            type="checkbox"
-            id="question1-5"
-            name="dogForm"
-            value="Only a little"
-          ></input>
-          <label>Only a little</label>
-          <br></br>
-          <input
-            checked={this.state.isFriendly}
-            onChange={this.handleChange}
-            type="checkbox"
-            id="question2-5"
-            name="dogForm"
-            value="Yes, I would like it to be active"
-          ></input>
-          <label>Yes, I would like it to be active</label>
-          <br></br>
-          <input
-            checked={this.state.isFriendly}
-            onChange={this.handleChange}
-            type="checkbox"
-            id="question3-5"
-            name="dogForm"
-            value="A never tired dog"
-          ></input>
-          <label>A never tired dog</label>
-          <br></br>
+            <p>How active should your dog be?</p>
+            <input
+              checked={this.state.isFriendly}
+              onChange={this.handleChange}
+              type="checkbox"
+              id="question1-5"
+              name="dogForm"
+              value="Only a little"
+            ></input>
+            <label>Only a little</label>
+            <br></br>
+            <input
+              checked={this.state.isFriendly}
+              onChange={this.handleChange}
+              type="checkbox"
+              id="question2-5"
+              name="dogForm"
+              value="Yes, I would like it to be active"
+            ></input>
+            <label>Yes, I would like it to be active</label>
+            <br></br>
+            <input
+              checked={this.state.isFriendly}
+              onChange={this.handleChange}
+              type="checkbox"
+              id="question3-5"
+              name="dogForm"
+              value="A never tired dog"
+            ></input>
+            <label>A never tired dog</label>
+            <br></br>
 
-          <p>How many times are you gonna go for a walk with your dog?</p>
-          <input
-            checked={this.state.isFriendly}
-            onChange={this.handleChange}
-            type="checkbox"
-            id="question1-6"
-            name="dogForm"
-            value="Rarely"
-          ></input>
-          <label>Rarely</label>
-          <br></br>
-          <input
-            checked={this.state.isFriendly}
-            onChange={this.handleChange}
-            type="checkbox"
-            value="At least twice a day"
-          ></input>
-          <label>At least twice a day</label>
-          <br></br>
-          <input
-            checked={this.state.isFriendly}
-            onChange={this.handleChange}
-            type="checkbox"
-            id="question3-6"
-            name="dogForm"
-            value="Three or more times a day"
-          ></input>
-          <label>Three or more times a day</label>
-          <br></br>
+            <p>How many times are you gonna go for a walk with your dog?</p>
+            <input
+              checked={this.state.isFriendly}
+              onChange={this.handleChange}
+              type="checkbox"
+              id="question1-6"
+              name="dogForm"
+              value="Rarely"
+            ></input>
+            <label>Rarely</label>
+            <br></br>
+            <input
+              checked={this.state.isFriendly}
+              onChange={this.handleChange}
+              type="checkbox"
+              value="At least twice a day"
+            ></input>
+            <label>At least twice a day</label>
+            <br></br>
+            <input
+              checked={this.state.isFriendly}
+              onChange={this.handleChange}
+              type="checkbox"
+              id="question3-6"
+              name="dogForm"
+              value="Three or more times a day"
+            ></input>
+            <label>Three or more times a day</label>
+            <br></br>
 
-          <p>Do you want a guarding dog?</p>
-          <input
-            checked={this.state.isFriendly}
-            onChange={this.handleChange}
-            type="checkbox"
-            id="question1-7"
-            name="dogForm"
-            value="No"
-          ></input>
-          <label>No</label>
-          <br></br>
-          <input
-            checked={this.state.isFriendly}
-            onChange={this.handleChange}
-            type="checkbox"
-            id="question2-7"
-            name="dogForm"
-            value="Yes"
-          ></input>
-          <label>Yes</label>
-          <br></br>
-          <input
-            checked={this.state.isFriendly}
-            onChange={this.handleChange}
-            type="checkbox"
-            id="question3-7"
-            name="dogForm"
-            value="Not a priority"
-          ></input>
-          <label>Not a priority</label>
-          <br></br>
+            <p>Do you want a guarding dog?</p>
+            <input
+              checked={this.state.isFriendly}
+              onChange={this.handleChange}
+              type="checkbox"
+              id="question1-7"
+              name="dogForm"
+              value="No"
+            ></input>
+            <label>No</label>
+            <br></br>
+            <input
+              checked={this.state.isFriendly}
+              onChange={this.handleChange}
+              type="checkbox"
+              id="question2-7"
+              name="dogForm"
+              value="Yes"
+            ></input>
+            <label>Yes</label>
+            <br></br>
+            <input
+              checked={this.state.isFriendly}
+              onChange={this.handleChange}
+              type="checkbox"
+              id="question3-7"
+              name="dogForm"
+              value="Not a priority"
+            ></input>
+            <label>Not a priority</label>
+            <br></br>
 
-          <p>What size of dog are you looking for?</p>
-          <input
-            checked={this.state.isFriendly}
-            onChange={this.handleChange}
-            type="checkbox"
-            id="question1-8"
-            name="dogForm"
-            value="Small size"
-          ></input>
-          <label>Small</label>
-          <br></br>
-          <input
-            checked={this.state.isFriendly}
-            onChange={this.handleChange}
-            type="checkbox"
-            id="question2-8"
-            name="dogForm"
-            value="Medium size"
-          ></input>
-          <label>Medium</label>
-          <br></br>
-          <input
-            checked={this.state.isFriendly}
-            onChange={this.handleChange}
-            type="checkbox"
-            id="question3-8"
-            name="dogForm"
-            value="Big size"
-          ></input>
-          <label>Big</label>
-          <br></br>
+            <p>What size of dog are you looking for?</p>
+            <input
+              checked={this.state.isFriendly}
+              onChange={this.handleChange}
+              type="checkbox"
+              id="question1-8"
+              name="dogForm"
+              value="Small size"
+            ></input>
+            <label>Small</label>
+            <br></br>
+            <input
+              checked={this.state.isFriendly}
+              onChange={this.handleChange}
+              type="checkbox"
+              id="question2-8"
+              name="dogForm"
+              value="Medium size"
+            ></input>
+            <label>Medium</label>
+            <br></br>
+            <input
+              checked={this.state.isFriendly}
+              onChange={this.handleChange}
+              type="checkbox"
+              id="question3-8"
+              name="dogForm"
+              value="Big size"
+            ></input>
+            <label>Big</label>
+            <br></br>
 
-          <p>How much are you willing to spend weekly for the dog food?</p>
-          <input
-            checked={this.state.isFriendly}
-            onChange={this.handleChange}
-            type="checkbox"
-            id="question1-9"
-            name="dogForm"
-            value="10€"
-          ></input>
-          <label>10€</label>
-          <br></br>
-          <input
-            checked={this.state.isFriendly}
-            onChange={this.handleChange}
-            type="checkbox"
-            id="question2-9"
-            name="dogForm"
-            value="25€"
-          ></input>
-          <label>25€</label>
-          <br></br>
-          <input
-            checked={this.state.isFriendly}
-            onChange={this.handleChange}
-            type="checkbox"
-            id="question3-9"
-            name="dogForm"
-            value=">25€"
-          ></input>
-          <label>>25€</label>
-          <br></br>
+            <p>How much are you willing to spend weekly for the dog food?</p>
+            <input
+              checked={this.state.isFriendly}
+              onChange={this.handleChange}
+              type="checkbox"
+              id="question1-9"
+              name="dogForm"
+              value="10€"
+            ></input>
+            <label>10€</label>
+            <br></br>
+            <input
+              checked={this.state.isFriendly}
+              onChange={this.handleChange}
+              type="checkbox"
+              id="question2-9"
+              name="dogForm"
+              value="25€"
+            ></input>
+            <label>25€</label>
+            <br></br>
+            <input
+              checked={this.state.isFriendly}
+              onChange={this.handleChange}
+              type="checkbox"
+              id="question3-9"
+              name="dogForm"
+              value=">25€"
+            ></input>
+            <label>>25€</label>
+            <br></br>
 
-          <p>Are you gonna do sports with your dog?</p>
-          <input
-            checked={this.state.isFriendly}
-            onChange={this.handleChange}
-            type="checkbox"
-            id="question1-10"
-            name="dogForm"
-            value="Surely no"
-          ></input>
-          <label>No</label>
-          <br></br>
-          <input
-            checked={this.state.isFriendly}
-            onChange={this.handleChange}
-            type="checkbox"
-            id="question2-10"
-            name="dogForm"
-            value="Maybe, but not often"
-          ></input>
-          <label>Maybe, but not often</label>
-          <br></br>
-          <input
-            checked={this.state.isFriendly}
-            onChange={this.handleChange}
-            type="checkbox"
-            id="question3-10"
-            name="dogForm"
-            value="yes for sure"
-          ></input>
-          <label>yes</label>
-          <br></br>
+            <p>Are you gonna do sports with your dog?</p>
+            <input
+              checked={this.state.isFriendly}
+              onChange={this.handleChange}
+              type="checkbox"
+              id="question1-10"
+              name="dogForm"
+              value="Surely no"
+            ></input>
+            <label>No</label>
+            <br></br>
+            <input
+              checked={this.state.isFriendly}
+              onChange={this.handleChange}
+              type="checkbox"
+              id="question2-10"
+              name="dogForm"
+              value="Maybe, but not often"
+            ></input>
+            <label>Maybe, but not often</label>
+            <br></br>
+            <input
+              checked={this.state.isFriendly}
+              onChange={this.handleChange}
+              type="checkbox"
+              id="question3-10"
+              name="dogForm"
+              value="yes for sure"
+            ></input>
+            <label>yes</label>
+            <br></br>
 
-          <button onClick={this.handleClick}>Find your perfect Dog!</button>
-        </form>
+            <button onClick={this.handleClick}>Find your perfect Dog!</button>
+          </form>
+        </div>
+        <div id="dog-result">
+          <img
+            src={this.state.selectedDogPic}
+            alt="pic of the winning dog"
+          ></img>
+        </div>
       </div>
     );
   }
