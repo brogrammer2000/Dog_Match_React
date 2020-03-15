@@ -7,7 +7,8 @@ class MatchQuestions extends React.Component {
       dogForm: "",
       answers: [],
       plainArr: [],
-      apiChar: []
+      apiChar: [],
+      selectedDogs: []
     };
     this.handleChange = this.handleChange.bind(this);
     this.handleClick = this.handleClick.bind(this);
@@ -21,7 +22,6 @@ class MatchQuestions extends React.Component {
 
     if (checked) {
       this.state.answers.push([value]);
-      console.log(this.state.answers);
     } else if (!checked) {
       this.state.answers.pop([value]);
     }
@@ -47,7 +47,7 @@ class MatchQuestions extends React.Component {
         let weigth = [];
         let temperamentCounter = 0;
         let bredCounter = 0;
-        let wieghtCounter = 0;
+
         //Dog list filled on the based of the user input
         let possibleDogs = [];
 
@@ -116,7 +116,6 @@ class MatchQuestions extends React.Component {
           } else if (this.state.plainArr[i] === "Medium size") {
             weigth.push(25);
           } else if (this.state.plainArr[i] === "Big size") {
-            console.log("BiGGOG");
             weigth.push(26);
           } else if (this.state.plainArr[i] === "10€") {
             weigth.push(10);
@@ -153,7 +152,7 @@ class MatchQuestions extends React.Component {
                 if (userDog[q] === apiDog[b]) {
                   temperamentCounter++;
                   if (temperamentCounter >= 1) {
-                    possibleDogs.push(data[j].name);
+                    possibleDogs.push(data[j]);
                   }
                 }
               }
@@ -172,38 +171,91 @@ class MatchQuestions extends React.Component {
                 if (userDog[q] === apiDog[b]) {
                   bredCounter++;
                   if (bredCounter >= 1) {
-                    possibleDogs.push(data[j].name);
+                    possibleDogs.push(data[j]);
                   }
                 }
               }
             }
           }
         }
+
+        //Calculting the average based on the user input
         let avgWeight = 0;
         for (let i = 0; i < weigth.length; i++) {
           avgWeight += weigth[i];
         }
 
         let average = avgWeight / weigth.length;
-        console.log(average);
-
+        //Based on the average we select only the API dogs which are within a certain weight
         for (let j = 0; j < data.length; j++) {
-          wieghtCounter = 0;
-          //Checking if the temperament of the dog are the same as the one of one of the list
           if (data[j].weight.metric !== undefined) {
+            //Parsing the API weight to be an int
             let apiDog = data[j].weight.metric
               .split(" - ")
               .map(int => parseInt(int));
-
-            if (average > apiDog[0]) {
-              console.log(average + ">" + apiDog[0]);
-              console.log(data[j].name);
-              possibleDogs.push(data[j].name);
+            if (average > apiDog[0] && average < apiDog[1]) {
+              possibleDogs.push(data[j]);
             }
           }
         }
+        let counter = 0;
+        for (let i = 0; i < possibleDogs.length; i++) {
+          counter = 0;
+          //Looping for temperament counter
+          if (possibleDogs[i].temperament !== undefined) {
+            for (
+              let j = 0;
+              j < possibleDogs[i].temperament.split(", ").length;
+              j++
+            ) {
+              for (let q = 0; q < temperament.length; q++) {
+                if (
+                  possibleDogs[i].temperament.split(", ")[j] === temperament[q]
+                ) {
+                  counter++;
+                }
+              }
+            }
+          }
 
-        console.log(possibleDogs);
+          //Looping for bred_for counter
+          if (possibleDogs[i].bred_for !== undefined) {
+            for (let q = 0; q < bred_for.length; q++) {
+              if (possibleDogs[i].bred_for === bred_for[q]) {
+                counter++;
+              }
+            }
+          }
+
+          //Looping for weight
+          if (possibleDogs[i].weight !== undefined) {
+            if (
+              possibleDogs[i].weight.metric.split(" - ")[0] < average &&
+              possibleDogs[i].weight.metric.split(" - ")[1] > average
+            ) {
+              console.log(
+                average +
+                  " " +
+                  possibleDogs[i].weight.metric.split(" - ")[0] +
+                  "   " +
+                  possibleDogs[i].weight.metric.split(" - ")[1] +
+                  possibleDogs[i].name
+              );
+              counter++;
+              counter++;
+            }
+          }
+
+          possibleDogs[i].counter = counter;
+        }
+
+        //Sorting the array of objects based on the counter
+        possibleDogs.sort((a, b) => (a.counter > b.counter ? -1 : 1));
+        //console.log(possibleDogs);
+
+        //setting the constructor selectedDogs equal to possibleDogs
+        this.setState({ selectedDogs: possibleDogs });
+        console.log(this.state.selectedDogs);
       });
   }
 
@@ -386,8 +438,6 @@ class MatchQuestions extends React.Component {
             checked={this.state.isFriendly}
             onChange={this.handleChange}
             type="checkbox"
-            id="question2-6"
-            name="dogForm"
             value="At least twice a day"
           ></input>
           <label>At least twice a day</label>
