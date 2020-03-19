@@ -9,7 +9,8 @@ class MatchQuestions extends React.Component {
       plainArr: [],
       apiChar: [],
       selectedDogs: [],
-      selectedDogPic: ""
+      selectedDogPic: "",
+      selectedDogName: ""
     };
     this.handleChange = this.handleChange.bind(this);
     this.handleClick = this.handleClick.bind(this);
@@ -256,15 +257,19 @@ class MatchQuestions extends React.Component {
 
         //setting the constructor selectedDogs equal to possibleDogs
         this.setState({ selectedDogs: possibleDogs });
-        console.log(this.state.selectedDogs);
+        const rngNumber = Math.floor(Math.random() * 10);
+        console.log(rngNumber);
         fetch(
-          `https://api.thedogapi.com/v1/images/search?breed_id=${this.state.selectedDogs[0].id}`
+          `https://api.thedogapi.com/v1/images/search?breed_id=${this.state.selectedDogs[rngNumber].id}`
         )
           .then(response => response.json())
           .then(data => {
-            this.setState({ selectedDogPic: data[0].url });
+            this.setState({
+              selectedDogPic: data[0].url,
+              selectedDogName: this.state.selectedDogs[rngNumber].name
+            });
             console.log(this.state.selectedDogPic);
-            console.log(data[0].url);
+            console.log(this.state.selectedDogs[rngNumber].name);
           });
       });
   }
@@ -282,6 +287,7 @@ class MatchQuestions extends React.Component {
               id="question1"
               name="dogForm"
               value="Small apartment"
+              required
             ></input>
             <label>Small apartment</label>
             <br></br>
@@ -596,6 +602,7 @@ class MatchQuestions extends React.Component {
           </form>
         </div>
         <div id="dog-result">
+          <p id="chosen-dog">{this.state.selectedDogName}</p>
           <img
             src={this.state.selectedDogPic}
             alt="pic of the winning dog"
