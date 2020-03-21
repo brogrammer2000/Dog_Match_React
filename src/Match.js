@@ -8,7 +8,9 @@ class Match extends React.Component {
     return (
       <div>
         <MatchIntroduction />
+
         <MatchQuestions />
+
         <Footer />
       </div>
     );

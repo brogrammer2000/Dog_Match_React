@@ -10,7 +10,10 @@ class MatchQuestions extends React.Component {
       apiChar: [],
       selectedDogs: [],
       selectedDogPic: "",
-      selectedDogName: ""
+      selectedDogName: "",
+      showMe: false,
+      btnText: "Find your perfect dog!",
+      displayQuestion: true
     };
     this.handleChange = this.handleChange.bind(this);
     this.handleClick = this.handleClick.bind(this);
@@ -38,102 +41,104 @@ class MatchQuestions extends React.Component {
   //Handling button click
   handleClick(event) {
     event.preventDefault();
-    document.getElementById("hide").style.display = "none";
-    //fetching API with all the dog breeds and charateristics
-    fetch("https://api.thedogapi.com/v1/breeds")
-      .then(response => response.json())
-      .then(data => {
-        //Declaring variables which will be filled by the user input
-        let temperament = [];
-        let bred_for = [];
-        let weigth = [];
-        let temperamentCounter = 0;
-        let bredCounter = 0;
 
-        //Dog list filled on the based of the user input
-        let possibleDogs = [];
+    if (this.state.displayQuestion) {
+      //fetching API with all the dog breeds and charateristics
 
-        //loop which checkes the user answers and fill up the variable arrays declare above
-        for (let i = 0; i < this.state.plainArr.length; i++) {
-          if (this.state.plainArr[i] === "Small apartment") {
-            temperament.push("Independent", "Compose", "Calm", "Quiet");
-          } else if (this.state.plainArr[i] === "Big apartment") {
-            temperament.push("Independent", "Patient", "Adaptable");
-          } else if (this.state.plainArr[i] === "Villa") {
-            temperament.push("Active", "Playful", "Energetic", "Lively");
-          } else if (this.state.plainArr[i] === "Friend") {
-            bred_for.push(
-              "Companionship",
-              "Family companion dog",
-              "Companion",
-              "Lapdog"
-            );
-          } else if (this.state.plainArr[i] === "Hunter") {
-            bred_for.push("Hunting");
-          } else if (this.state.plainArr[i] === "Protector") {
-            bred_for.push("Guarding", "Guardian", "guard", "watchdog");
-          } else if (this.state.plainArr[i] === "Yes I do") {
-            temperament.push(
-              "Friendly",
-              "Docile",
-              "Affectionate",
-              "Gentle",
-              "Faithful"
-            );
-          } else if (this.state.plainArr[i] === "No I do not") {
-            temperament.push("Calm");
-          } else if (this.state.plainArr[i] === "Maybe in the future") {
-            temperament.push("Independent", "Patient", "Adaptable");
-          } else if (this.state.plainArr[i] === "Small/No") {
-            temperament.push("Calm");
-          } else if (this.state.plainArr[i] === "Medium") {
-            temperament.push("Independent", "Patient", "Adaptable");
-          } else if (this.state.plainArr[i] === "Big") {
-            temperament.push("Active", "Playful", "Energetic", "Lively");
-          } else if (this.state.plainArr[i] === "Only a little") {
-            temperament.push("Independent", "Compose", "Calm", "Quiet");
-          } else if (
-            this.state.plainArr[i] === "Yes, I would like it to be active"
-          ) {
-            temperament.push("Independent", "Patient", "Adaptable");
-          } else if (this.state.plainArr[i] === "A never tired dog") {
-            temperament.push("Active", "Playful", "Energetic", "Lively");
-          } else if (this.state.plainArr[i] === "Rarely") {
-            temperament.push("Independent", "Compose", "Calm", "Quiet");
-          } else if (this.state.plainArr[i] === "At least twice a day") {
-            temperament.push("Independent", "Patient", "Adaptable");
-          } else if (this.state.plainArr[i] === "Three or more times a day") {
-            temperament.push("Active", "Playful", "Energetic", "Lively");
-          } else if (this.state.plainArr[i] === "No") {
-            temperament.push(
-              "Alert",
-              "Loyal",
-              "Protective",
-              "Brave",
-              "Powerful",
-              "Courageous"
-            );
-          } else if (this.state.plainArr[i] === "Small size") {
-            weigth.push(10);
-          } else if (this.state.plainArr[i] === "Medium size") {
-            weigth.push(25);
-          } else if (this.state.plainArr[i] === "Big size") {
-            weigth.push(26);
-          } else if (this.state.plainArr[i] === "10€") {
-            weigth.push(10);
-          } else if (this.state.plainArr[i] === "25€") {
-            weigth.push(25);
-          } else if (this.state.plainArr[i] === ">25€") {
-            weigth.push(26);
-          } else if (this.state.plainArr[i] === "Surely no") {
-            weigth.push(10);
-          } else if (this.state.plainArr[i] === "Maybe, but not often") {
-            weigth.push(25);
-          } else if (this.state.plainArr[i] === "Yes for sure") {
-            weigth.push(26);
+      fetch("https://api.thedogapi.com/v1/breeds")
+        .then(response => response.json())
+        .then(data => {
+          //Declaring variables which will be filled by the user input
+          let temperament = [];
+          let bred_for = [];
+          let weigth = [];
+          let temperamentCounter = 0;
+          let bredCounter = 0;
+
+          //Dog list filled on the based of the user input
+          let possibleDogs = [];
+
+          //loop which checkes the user answers and fill up the variable arrays declare above
+          for (let i = 0; i < this.state.plainArr.length; i++) {
+            if (this.state.plainArr[i] === "Small apartment") {
+              temperament.push("Independent", "Compose", "Calm", "Quiet");
+            } else if (this.state.plainArr[i] === "Big apartment") {
+              temperament.push("Independent", "Patient", "Adaptable");
+            } else if (this.state.plainArr[i] === "Villa") {
+              temperament.push("Active", "Playful", "Energetic", "Lively");
+            } else if (this.state.plainArr[i] === "Friend") {
+              bred_for.push(
+                "Companionship",
+                "Family companion dog",
+                "Companion",
+                "Lapdog"
+              );
+            } else if (this.state.plainArr[i] === "Hunter") {
+              bred_for.push("Hunting");
+            } else if (this.state.plainArr[i] === "Protector") {
+              bred_for.push("Guarding", "Guardian", "guard", "watchdog");
+            } else if (this.state.plainArr[i] === "Yes I do") {
+              temperament.push(
+                "Friendly",
+                "Docile",
+                "Affectionate",
+                "Gentle",
+                "Faithful"
+              );
+            } else if (this.state.plainArr[i] === "No I do not") {
+              temperament.push("Calm");
+            } else if (this.state.plainArr[i] === "Maybe in the future") {
+              temperament.push("Independent", "Patient", "Adaptable");
+            } else if (this.state.plainArr[i] === "Small/No") {
+              temperament.push("Calm");
+            } else if (this.state.plainArr[i] === "Medium") {
+              temperament.push("Independent", "Patient", "Adaptable");
+            } else if (this.state.plainArr[i] === "Big") {
+              temperament.push("Active", "Playful", "Energetic", "Lively");
+            } else if (this.state.plainArr[i] === "Only a little") {
+              temperament.push("Independent", "Compose", "Calm", "Quiet");
+            } else if (
+              this.state.plainArr[i] === "Yes, I would like it to be active"
+            ) {
+              temperament.push("Independent", "Patient", "Adaptable");
+            } else if (this.state.plainArr[i] === "A never tired dog") {
+              temperament.push("Active", "Playful", "Energetic", "Lively");
+            } else if (this.state.plainArr[i] === "Rarely") {
+              temperament.push("Independent", "Compose", "Calm", "Quiet");
+            } else if (this.state.plainArr[i] === "At least twice a day") {
+              temperament.push("Independent", "Patient", "Adaptable");
+            } else if (this.state.plainArr[i] === "Three or more times a day") {
+              temperament.push("Active", "Playful", "Energetic", "Lively");
+            } else if (this.state.plainArr[i] === "No") {
+              temperament.push(
+                "Alert",
+                "Loyal",
+                "Protective",
+                "Brave",
+                "Powerful",
+                "Courageous"
+              );
+            } else if (this.state.plainArr[i] === "Small size") {
+              weigth.push(10);
+            } else if (this.state.plainArr[i] === "Medium size") {
+              weigth.push(25);
+            } else if (this.state.plainArr[i] === "Big size") {
+              weigth.push(26);
+            } else if (this.state.plainArr[i] === "10€") {
+              weigth.push(10);
+            } else if (this.state.plainArr[i] === "25€") {
+              weigth.push(25);
+            } else if (this.state.plainArr[i] === ">25€") {
+              weigth.push(26);
+            } else if (this.state.plainArr[i] === "Surely no") {
+              weigth.push(10);
+            } else if (this.state.plainArr[i] === "Maybe, but not often") {
+              weigth.push(25);
+            } else if (this.state.plainArr[i] === "Yes for sure") {
+              weigth.push(26);
+            }
           }
-        }
-        /*
+          /*
         for (let i = 0; i < temperament.length; i++) {
           for (let j = 0; j < temperament.length; j++) {
             if (temperament[i] === temperament[j]) {
@@ -142,136 +147,151 @@ class MatchQuestions extends React.Component {
           }
         }
         */
-        //Looping through the API in order to compare the user input and API dog info
-        for (let j = 0; j < data.length; j++) {
-          temperamentCounter = 0;
-          //Checking if the temperament of the dog are the same as the one of one of the list
-          if (data[j].temperament !== undefined) {
-            for (let q = 0; q < data[j].temperament.split(",").length; q++) {
-              let userDog = temperament.sort();
-              let apiDog = data[j].temperament.split(",").sort();
-              for (let b = 0; b < data[j].temperament.split(",").length; b++) {
-                if (userDog[q] === apiDog[b]) {
-                  temperamentCounter++;
-                  if (temperamentCounter >= 1) {
-                    possibleDogs.push(data[j]);
-                  }
-                }
-              }
-            }
-          }
-        }
-
-        for (let j = 0; j < data.length; j++) {
-          bredCounter = 0;
-          //Checking if the temperament of the dog are the same as the one of one of the list
-          if (data[j].bred_for !== undefined) {
-            for (let q = 0; q < data[j].bred_for.split(",").length; q++) {
-              let userDog = bred_for.sort();
-              let apiDog = data[j].bred_for.split(",").sort();
-              for (let b = 0; b < data[j].bred_for.split(",").length; b++) {
-                if (userDog[q] === apiDog[b]) {
-                  bredCounter++;
-                  if (bredCounter >= 1) {
-                    possibleDogs.push(data[j]);
-                  }
-                }
-              }
-            }
-          }
-        }
-
-        //Calculting the average based on the user input
-        let avgWeight = 0;
-        for (let i = 0; i < weigth.length; i++) {
-          avgWeight += weigth[i];
-        }
-
-        let average = avgWeight / weigth.length;
-        //Based on the average we select only the API dogs which are within a certain weight
-        for (let j = 0; j < data.length; j++) {
-          if (data[j].weight.metric !== undefined) {
-            //Parsing the API weight to be an int
-            let apiDog = data[j].weight.metric
-              .split(" - ")
-              .map(int => parseInt(int));
-            if (average > apiDog[0] && average < apiDog[1]) {
-              possibleDogs.push(data[j]);
-            }
-          }
-        }
-        let counter = 0;
-        for (let i = 0; i < possibleDogs.length; i++) {
-          counter = 0;
-          //Looping for temperament counter
-          if (possibleDogs[i].temperament !== undefined) {
-            for (
-              let j = 0;
-              j < possibleDogs[i].temperament.split(", ").length;
-              j++
-            ) {
-              for (let q = 0; q < temperament.length; q++) {
-                if (
-                  possibleDogs[i].temperament.split(", ")[j] === temperament[q]
+          //Looping through the API in order to compare the user input and API dog info
+          for (let j = 0; j < data.length; j++) {
+            temperamentCounter = 0;
+            //Checking if the temperament of the dog are the same as the one of one of the list
+            if (data[j].temperament !== undefined) {
+              for (let q = 0; q < data[j].temperament.split(",").length; q++) {
+                let userDog = temperament.sort();
+                let apiDog = data[j].temperament.split(",").sort();
+                for (
+                  let b = 0;
+                  b < data[j].temperament.split(",").length;
+                  b++
                 ) {
+                  if (userDog[q] === apiDog[b]) {
+                    temperamentCounter++;
+                    if (temperamentCounter >= 1) {
+                      possibleDogs.push(data[j]);
+                    }
+                  }
+                }
+              }
+            }
+          }
+
+          for (let j = 0; j < data.length; j++) {
+            bredCounter = 0;
+            //Checking if the temperament of the dog are the same as the one of one of the list
+            if (data[j].bred_for !== undefined) {
+              for (let q = 0; q < data[j].bred_for.split(",").length; q++) {
+                let userDog = bred_for.sort();
+                let apiDog = data[j].bred_for.split(",").sort();
+                for (let b = 0; b < data[j].bred_for.split(",").length; b++) {
+                  if (userDog[q] === apiDog[b]) {
+                    bredCounter++;
+                    if (bredCounter >= 1) {
+                      possibleDogs.push(data[j]);
+                    }
+                  }
+                }
+              }
+            }
+          }
+
+          //Calculting the average based on the user input
+          let avgWeight = 0;
+          for (let i = 0; i < weigth.length; i++) {
+            avgWeight += weigth[i];
+          }
+
+          let average = avgWeight / weigth.length;
+          //Based on the average we select only the API dogs which are within a certain weight
+          for (let j = 0; j < data.length; j++) {
+            if (data[j].weight.metric !== undefined) {
+              //Parsing the API weight to be an int
+              let apiDog = data[j].weight.metric
+                .split(" - ")
+                .map(int => parseInt(int));
+              if (average > apiDog[0] && average < apiDog[1]) {
+                possibleDogs.push(data[j]);
+              }
+            }
+          }
+
+          let counter = 0;
+          for (let i = 0; i < possibleDogs.length; i++) {
+            counter = 0;
+            //Looping for temperament counter
+            if (possibleDogs[i].temperament !== undefined) {
+              for (
+                let j = 0;
+                j < possibleDogs[i].temperament.split(", ").length;
+                j++
+              ) {
+                for (let q = 0; q < temperament.length; q++) {
+                  if (
+                    possibleDogs[i].temperament.split(", ")[j] ===
+                    temperament[q]
+                  ) {
+                    counter++;
+                  }
+                }
+              }
+            }
+
+            //Looping for bred_for counter
+            if (possibleDogs[i].bred_for !== undefined) {
+              for (let q = 0; q < bred_for.length; q++) {
+                if (possibleDogs[i].bred_for === bred_for[q]) {
                   counter++;
                 }
               }
             }
-          }
 
-          //Looping for bred_for counter
-          if (possibleDogs[i].bred_for !== undefined) {
-            for (let q = 0; q < bred_for.length; q++) {
-              if (possibleDogs[i].bred_for === bred_for[q]) {
+            //Looping for weight
+            if (possibleDogs[i].weight !== undefined) {
+              if (
+                possibleDogs[i].weight.metric.split(" - ")[0] < average &&
+                possibleDogs[i].weight.metric.split(" - ")[1] > average
+              ) {
+                console.log(
+                  average +
+                    " " +
+                    possibleDogs[i].weight.metric.split(" - ")[0] +
+                    "   " +
+                    possibleDogs[i].weight.metric.split(" - ")[1] +
+                    possibleDogs[i].name
+                );
+                counter++;
                 counter++;
               }
             }
+
+            possibleDogs[i].counter = counter;
           }
 
-          //Looping for weight
-          if (possibleDogs[i].weight !== undefined) {
-            if (
-              possibleDogs[i].weight.metric.split(" - ")[0] < average &&
-              possibleDogs[i].weight.metric.split(" - ")[1] > average
-            ) {
-              console.log(
-                average +
-                  " " +
-                  possibleDogs[i].weight.metric.split(" - ")[0] +
-                  "   " +
-                  possibleDogs[i].weight.metric.split(" - ")[1] +
-                  possibleDogs[i].name
-              );
-              counter++;
-              counter++;
-            }
+          //Sorting the array of objects based on the counter
+          possibleDogs.sort((a, b) => (a.counter > b.counter ? -1 : 1));
+          //console.log(possibleDogs);
+
+          //setting the constructor selectedDogs equal to possibleDogs
+          this.setState({ selectedDogs: possibleDogs });
+          const rngNumber = Math.floor(Math.random() * 10);
+          console.log(rngNumber);
+          if (this.state.selectedDogs.length > 9) {
+            document.getElementById("hide").style.display = "none";
+            fetch(
+              `https://api.thedogapi.com/v1/images/search?breed_id=${this.state.selectedDogs[rngNumber].id}`
+            )
+              .then(response => response.json())
+              .then(data => {
+                this.setState({
+                  displayQuestion: false,
+                  showMe: true,
+                  selectedDogPic: data[0].url,
+                  selectedDogName: this.state.selectedDogs[rngNumber].name
+                });
+              });
+          } else {
+            alert("Please answer more questions");
           }
-
-          possibleDogs[i].counter = counter;
-        }
-
-        //Sorting the array of objects based on the counter
-        possibleDogs.sort((a, b) => (a.counter > b.counter ? -1 : 1));
-        //console.log(possibleDogs);
-
-        //setting the constructor selectedDogs equal to possibleDogs
-        this.setState({ selectedDogs: possibleDogs });
-        const rngNumber = Math.floor(Math.random() * 10);
-        console.log(rngNumber);
-        fetch(
-          `https://api.thedogapi.com/v1/images/search?breed_id=${this.state.selectedDogs[rngNumber].id}`
-        )
-          .then(response => response.json())
-          .then(data => {
-            this.setState({
-              selectedDogPic: data[0].url,
-              selectedDogName: this.state.selectedDogs[rngNumber].name
-            });
-            console.log(this.state.selectedDogPic);
-            console.log(this.state.selectedDogs[rngNumber].name);
-          });
-      });
+        });
+    } else {
+      this.setState({ displayQuestion: true, showMe: false });
+      document.getElementById("hide").style.display = "initial";
+    }
   }
 
   render() {
@@ -287,7 +307,6 @@ class MatchQuestions extends React.Component {
               id="question1"
               name="dogForm"
               value="Small apartment"
-              required
             ></input>
             <label>Small apartment</label>
             <br></br>
@@ -597,17 +616,19 @@ class MatchQuestions extends React.Component {
             ></input>
             <label>yes</label>
             <br></br>
-
-            <button onClick={this.handleClick}>Find your perfect Dog!</button>
           </form>
         </div>
-        <div id="dog-result">
-          <p id="chosen-dog">{this.state.selectedDogName}</p>
-          <img
-            src={this.state.selectedDogPic}
-            alt="pic of the winning dog"
-          ></img>
-        </div>
+        <button onClick={this.handleClick}>{this.state.btnText}</button>
+        {this.state.showMe ? (
+          <div id="dog-result">
+            <p id="chosen-dog">{this.state.selectedDogName}</p>
+            <img
+              src={this.state.selectedDogPic}
+              alt="Dog selected"
+              id="picHide"
+            ></img>
+          </div>
+        ) : null}
       </div>
     );
   }
